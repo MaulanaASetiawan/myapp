@@ -1,0 +1,30 @@
+{
+    "project_info": {
+      "project_number": "1052720470899",
+      "firebase_url": "https://waterleak-bindes-default-rtdb.firebaseio.com",
+      "project_id": "waterleak-bindes",
+      "storage_bucket": "waterleak-bindes.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:1052720470899:android:9ea2d067c5812a172cc306",
+          "android_client_info": {
+            "package_name": "com.example.mindfreak"
+          }
+        },
+        "oauth_client": [],
+        "api_key": [
+          {
+            "current_key": "AIzaSyCyQlXQm1WEZ4YAm_RPb0r6aETqFCZLEzA"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": []
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
