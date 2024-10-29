@@ -80,6 +80,7 @@ flutter:
   assets:
     - assets/assetsfloating_structure.jpg
     - assets/pict.png
+    - assets/bagan.png
     - assets/danger.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -7,6 +7,7 @@ import 'notification_service.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class MqttService {
+  // final MqttServerClient client = MqttServerClient('as1.cloud.thethings.industries', '');
   final MqttServerClient client = MqttServerClient('as1.cloud.thethings.industries', '');
   final NotificationService notificationService;
   final String deviceId;
