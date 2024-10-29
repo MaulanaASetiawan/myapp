@@ -203,12 +203,12 @@ class _MyAppState extends State<MyApp> {
     // Kanan (Right Positions) dengan jarak y lebih rapat
     const List<Offset> rightPositions = [
       Offset(100, -70),
-      Offset(100, -25),    
-      Offset(100, 20),     
-      Offset(100, 65),     
-      Offset(100, 110),    
-      Offset(100, 150),    
-      Offset(100, 195),    
+      Offset(100, -25),
+      Offset(100, 20),
+      Offset(100, 65),
+      Offset(100, 110),
+      Offset(100, 150),
+      Offset(100, 195),
     ];
 
     return Center(
@@ -241,8 +241,6 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-
-
 
   Widget _buildLeakIndicator(int? leakStatus, Offset position) {
     if (leakStatus == 1) {
