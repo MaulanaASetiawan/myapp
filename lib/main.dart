@@ -1165,7 +1165,6 @@
 
 
 
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -1230,6 +1229,14 @@ class _MyAppState extends State<MyApp> {
       return 'Platform Tidak Dikenal';
     }
   }
+
+    double calculateAlfa(double sensorValue, bool isOddSensor) {
+      if (isOddSensor) {
+        return -7.06295934183023 + 0.0226603135592881 * sensorValue;
+      } else {
+        return 7.06295934183023 - 0.0226603135592881 * sensorValue;
+      }
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -1346,7 +1353,110 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Widget _buildLeakMonitorView() {
+  // Widget _buildLeakMonitorView() {
+  //   const List<Offset> leftPositions = [
+  //     Offset(-95, -70),
+  //     Offset(-95, -10),
+  //     Offset(-95, 50),
+  //     Offset(-95, 100),
+  //     Offset(-95, 145),
+  //     Offset(-95, 195),
+  //   ];
+
+  //   const List<Offset> rightPositions = [
+  //     Offset(105, -70),
+  //     Offset(105, -25),
+  //     Offset(105, 25),
+  //     Offset(105, 70),
+  //     Offset(105, 115),
+  //     Offset(105, 155),
+  //     Offset(105, 195),
+  //   ];
+
+  //   final angles = _tiltSensorValues;
+
+  //   List<bool> leakData = mqttService?.leakData ?? [];
+  //   List<bool> leftLeakData = leakData.length >= 6 ? leakData.sublist(0, 6) : [];
+  //   List<bool> rightLeakData = leakData.length > 11 ? leakData.sublist(11, 18) : [];
+
+  //   print('Left Leak Data: $leftLeakData');
+  //   print('Right Leak Data: $rightLeakData');
+
+  //   return Center(
+  //     child: Stack(
+  //       alignment: Alignment.center,
+  //       children: [
+  //         Image.asset(
+  //           'assets/bagan.png',
+  //           width: 300,
+  //           fit: BoxFit.cover,
+  //           errorBuilder: (context, error, stackTrace) =>
+  //               const Text('Gambar tidak ditemukan'),
+  //         ),
+  //         Positioned(
+  //           left: 0,
+  //           top: 10,
+  //           child: Text(
+  //             'Kemiringan: ${angles[0].toStringAsFixed(2)} mm',
+  //             style: const TextStyle(
+  //                 color: Colors.black,
+  //                 fontWeight: FontWeight.bold,
+  //                 fontSize: 12),
+  //           ),
+  //         ),
+  //         Positioned(
+  //           right: 0,
+  //           top: 10,
+  //           child: Text(
+  //             'Kemiringan: ${angles[1].toStringAsFixed(2)} mm',
+  //             style: const TextStyle(
+  //                 color: Colors.black,
+  //                 fontWeight: FontWeight.bold,
+  //                 fontSize: 12),
+  //           ),
+  //         ),
+  //         Positioned(
+  //           left: 0,
+  //           bottom: 10,
+  //           child: Text(
+  //             'Kemiringan: ${angles[2].toStringAsFixed(2)} mm',
+  //             style: const TextStyle(
+  //                 color: Colors.black,
+  //                 fontWeight: FontWeight.bold,
+  //                 fontSize: 12),
+  //           ),
+  //         ),
+  //         Positioned(
+  //           right: 0,
+  //           bottom: 10,
+  //           child: Text(
+  //             'Kemiringan: ${angles[3].toStringAsFixed(2)} mm',
+  //             style: const TextStyle(
+  //                 color: Colors.black,
+  //                 fontWeight: FontWeight.bold,
+  //                 fontSize: 12),
+  //           ),
+  //         ),
+  //         ...List.generate(leftPositions.length, (index) {
+  //           if (leftLeakData.isNotEmpty && leftLeakData[index] == true) {
+  //             print('Membuat lingkaran di kiri pada posisi $index');
+  //             return _buildLeakIndicator(1, leftPositions[index]);
+  //           }
+  //           return const SizedBox.shrink();
+  //         }),
+  //         ...List.generate(rightPositions.length, (index) {
+  //           if (rightLeakData.isNotEmpty && rightLeakData[index] == true) {
+  //             print('Membuat lingkaran di kanan pada posisi $index');
+  //             return _buildLeakIndicator(1, rightPositions[index]);
+  //           }
+  //           return const SizedBox.shrink();
+  //         }),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+    Widget _buildLeakMonitorView() {
     const List<Offset> leftPositions = [
       Offset(-95, -70),
       Offset(-95, -10),
@@ -1366,14 +1476,17 @@ class _MyAppState extends State<MyApp> {
       Offset(105, 195),
     ];
 
-    final angles = _tiltSensorValues;
+    // Convert sensor values to alfa values before displaying
+    final alfaValues = [
+      calculateAlfa(_tiltSensorValues[0], true),
+      calculateAlfa(_tiltSensorValues[1], false),
+      calculateAlfa(_tiltSensorValues[2], true),
+      calculateAlfa(_tiltSensorValues[3], false)
+    ];
 
     List<bool> leakData = mqttService?.leakData ?? [];
     List<bool> leftLeakData = leakData.length >= 6 ? leakData.sublist(0, 6) : [];
     List<bool> rightLeakData = leakData.length > 11 ? leakData.sublist(11, 18) : [];
-
-    print('Left Leak Data: $leftLeakData');
-    print('Right Leak Data: $rightLeakData');
 
     return Center(
       child: Stack(
@@ -1390,7 +1503,7 @@ class _MyAppState extends State<MyApp> {
             left: 0,
             top: 10,
             child: Text(
-              'Kemiringan: ${angles[0].toStringAsFixed(2)} mm',
+              'Kiri Atas: ${alfaValues[0].toStringAsFixed(2)}°',
               style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -1401,7 +1514,7 @@ class _MyAppState extends State<MyApp> {
             right: 0,
             top: 10,
             child: Text(
-              'Kemiringan: ${angles[1].toStringAsFixed(2)} mm',
+              'Kanan Atas: ${alfaValues[1].toStringAsFixed(2)}°',
               style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -1412,7 +1525,7 @@ class _MyAppState extends State<MyApp> {
             left: 0,
             bottom: 10,
             child: Text(
-              'Kemiringan: ${angles[2].toStringAsFixed(2)} mm',
+              'Kiri Bawah: ${alfaValues[2].toStringAsFixed(2)}°',
               style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -1423,7 +1536,7 @@ class _MyAppState extends State<MyApp> {
             right: 0,
             bottom: 10,
             child: Text(
-              'Kemiringan: ${angles[3].toStringAsFixed(2)} mm',
+              'Kanan Bawah: ${alfaValues[3].toStringAsFixed(2)}°',
               style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -1432,14 +1545,12 @@ class _MyAppState extends State<MyApp> {
           ),
           ...List.generate(leftPositions.length, (index) {
             if (leftLeakData.isNotEmpty && leftLeakData[index] == true) {
-              print('Membuat lingkaran di kiri pada posisi $index');
               return _buildLeakIndicator(1, leftPositions[index]);
             }
             return const SizedBox.shrink();
           }),
           ...List.generate(rightPositions.length, (index) {
             if (rightLeakData.isNotEmpty && rightLeakData[index] == true) {
-              print('Membuat lingkaran di kanan pada posisi $index');
               return _buildLeakIndicator(1, rightPositions[index]);
             }
             return const SizedBox.shrink();
