@@ -37,7 +37,7 @@
 
           # TODO: Execute web build in debug mode.
           # flutter run does this transparently either way
-          # https://github.com/flutter/flutter/issues/96283#issuecomment-1144750411
+          # https://github.com/iudflutter/flutter/issues/96283#issuecomment-1144750411
           # flutter build web --profile --dart-define=Dart2jsOptimization=O0 
 
           adb -s localhost:5555 wait-for-device
