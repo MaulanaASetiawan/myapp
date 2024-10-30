@@ -849,6 +849,7 @@
 // }
 
 // FIX TEMPRORARY
+// import 'dart:ffi';
 import 'dart:convert';
 import 'dart:ffi';
 
@@ -1054,6 +1055,14 @@ class _MyAppState extends State<MyApp> {
 
     final angles = _tiltSensorValues;
 
+    // Mengambil 6 digit pertama untuk indikator kiri dan 7 digit terakhir untuk indikator kanan
+    List<bool> leftLeakData = _leakData['digital_inputs']?.sublist(0, 6) ?? [];
+    List<bool> rightLeakData =
+        _leakData['digital_inputs']?.sublist(11, 18) ?? [];
+
+    print('Left Leak Data: $leftLeakData');
+    print('Right Leak Data: $rightLeakData');
+
     return Center(
       child: Stack(
         alignment: Alignment.center,
@@ -1110,14 +1119,15 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
           ...List.generate(leftPositions.length, (index) {
-            if (_leakData['float_$index']?[0] == true) {
+            if (leftLeakData.isNotEmpty && leftLeakData[index] == true) {
+              print('Membuat lingkaran di kiri pada posisi $index');
               return _buildLeakIndicator(1, leftPositions[index]);
             }
             return const SizedBox.shrink();
           }),
           ...List.generate(rightPositions.length, (index) {
-            int rightIndex = index + leftPositions.length;
-            if (_leakData['float_$rightIndex']?[0] == true) {
+            if (rightLeakData.isNotEmpty && rightLeakData[index] == true) {
+              print('Membuat lingkaran di kanan pada posisi $index');
               return _buildLeakIndicator(1, rightPositions[index]);
             }
             return const SizedBox.shrink();

@@ -8,7 +8,7 @@ import 'package:fl_chart/fl_chart.dart';
 
 class MqttService {
   // final MqttServerClient client = MqttServerClient('as1.cloud.thethings.industries', '');
-  final MqttServerClient client = MqttServerClient('as1.cloud.thethings.industries', '');
+  final MqttServerClient client = MqttServerClient('broker.mqtt.cool', '');
   final NotificationService notificationService;
   final String deviceId;
   final List<String> _subscribedTopics = [
@@ -18,7 +18,7 @@ class MqttService {
   // final Map<String, List<bool>> _data;
   final List<double> _tiltSensorValues;
   final VoidCallback onChartDataUpdate;
-  Map<String, List<bool>> _leakData;
+  final Map<String, List<bool>> _leakData;
 
   MqttService(this.notificationService, this.deviceId, this._chartData,
       this._tiltSensorValues, this._leakData, this.onChartDataUpdate) {
