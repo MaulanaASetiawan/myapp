@@ -4,10 +4,11 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'notification_service.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MqttService {
-  final MqttServerClient client = MqttServerClient('broker.mqtt.cool', '');
-  // final MqttServerClient client = MqttServerClient('as1.cloud.thethings.industries', '');
+  // final MqttServerClient client = MqttServerClient('broker.mqtt.cool', '');
+  final MqttServerClient client = MqttServerClient('as1.cloud.thethings.industries', '');
   final NotificationService notificationService;
   final String deviceId;
   final List<String> _subscribedTopics = [
@@ -33,7 +34,7 @@ class MqttService {
     try {
       final connMessage = MqttConnectMessage()
           .withClientIdentifier('MqttClient')
-          // .authenticateAs(dotenv.env['USERNAME_ACCESS']!, dotenv.env['PASSWORD_ACCESS']!)
+          .authenticateAs(dotenv.env['USERNAME_ACCESS']!, dotenv.env['PASSWORD_ACCESS']!)
           .startClean()
           .withWillQos(MqttQos.atLeastOnce);
       client.connectionMessage = connMessage;
